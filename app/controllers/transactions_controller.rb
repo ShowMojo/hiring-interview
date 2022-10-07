@@ -1,5 +1,5 @@
 class TransactionsController < ApplicationController
-
+  before_action :set_new_form, only: [:new, :new_large, :new_extra_large]
   def index
     @transactions = Transaction.all
   end
@@ -9,30 +9,43 @@ class TransactionsController < ApplicationController
   end
 
   def new
-    @transaction = Transaction.new
-    @manager = Manager.all.sample
-
     render "new_#{params[:type]}"
   end
 
   def new_large
-    @transaction = Transaction.new
   end
 
   def new_extra_large
-    @transaction = Transaction.new
-    @manager = Manager.all.sample
   end
 
   def create
-    @transaction = Transaction.new(params[:transaction].permit!)
+    @form = form.new(permited_params)
 
-    @manager = Manager.all.sample if params[:type] == 'extra'
-
-    if @transaction.save
-      redirect_to @transaction
+    if @form.save
+      redirect_to @form.transaction
     else
       render "new_#{params[:type]}"
+    end
+  end
+
+  private
+
+  def permited_params
+    params.require(:transaction).permit(:first_name, :last_name, :from_currency, :to_currency, :from_amount)
+  end
+
+  def set_new_form
+    @form = form.new
+  end
+
+  def form
+    case params[:type]
+    when "extra"
+      ExtraTransactionForm
+    when "large"
+      LargeTransactionForm
+    else
+      SmallTransactionForm
     end
   end
 end
