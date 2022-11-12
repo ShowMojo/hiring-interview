@@ -1,5 +1,7 @@
 class Transaction < ApplicationRecord
+  include Exchangable
   AVAILABLE_CURRENCIES = ['USD', 'GBP', 'AUD', 'CAD'].freeze
+  TYPES = ['small', 'large', 'extra']
 
   belongs_to :manager, optional: true
 
@@ -8,28 +10,14 @@ class Transaction < ApplicationRecord
 
   validates :first_name, presence: true, if: :large?
   validates :last_name, presence: true, if: :large?
-  validates :from_currency, inclusion: AVAILABLE_CURRENCIES
-  validates :to_currency, inclusion: AVAILABLE_CURRENCIES
-  validate :currencies_validation
-  validate :manager_validation
 
   before_create :generate_uid
-  before_validation :convert
+  before_validation :assign_manager, if: :extra_large?
+
+  delegate :full_name, to: :manager, allow_nil: true, prefix: :manager
 
   def client_full_name
     "#{first_name} #{last_name}"
-  end
-
-  def large?
-    from_amount_in_usd > Money.from_amount(100)
-  end
-
-  def extra_large?
-    from_amount_in_usd > Money.from_amount(1000)
-  end
-
-  def from_amount_in_usd
-    from_amount.exchange_to('USD')
   end
 
   private
@@ -38,24 +26,7 @@ class Transaction < ApplicationRecord
     self.uid = SecureRandom.hex(5)
   end
 
-  def convert
-    if self.to_amount.blank?
-      self.to_amount = from_amount.exchange_to(self.to_currency)
-    end
-  end
-
-  def currencies_validation
-    if from_currency == to_currency
-      errors.add(:from_currency, "can't be converted to the same currency.")
-    end
-    if !extra_large? && from_currency != 'USD'
-      errors.add(:from_currency, "available only for conversions over $1000.")
-    end
-  end
-
-  def manager_validation
-    if extra_large? && !manager
-      errors.add(:base, "conversions over $1000 require personal manager.")
-    end
+  def assign_manager
+    self.manager = Manager.offset(rand(Manager.count)).first
   end
 end

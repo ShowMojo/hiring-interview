@@ -82,5 +82,3 @@ test:
 production:
   <<: *default
   database: exchange_office_production
-  username: exchange_office
-  password: <%= ENV['EXCHANGE_OFFICE_DATABASE_PASSWORD'] %>
