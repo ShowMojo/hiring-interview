@@ -19,4 +19,5 @@
 
 1. I would like to add import or export feature for transactions for users
 2. I would add authentications for users and manager and create panel for users and dashboard to monitor transaction for admin
-3. I would like to add some features likes integration with google sheet or third-party to bring all data into one app 
+3. I would like to add some features likes integration with google sheet or third-party to bring all data into one app
+4. I would some javascript code to render first name, last name if user type more than 100

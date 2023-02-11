@@ -7,8 +7,8 @@ module Transactionable
     monetize :from_amount_cents, with_currency: ->(t) { t.from_currency }, numericality: { greater_than: 0 }
     monetize :to_amount_cents, with_currency: ->(t) { t.to_currency }
 
-    validates :first_name, presence: true, if: -> record { record.large? && record.extra_large? }
-    validates :last_name, presence: true, if: -> record { record.large? && record.extra_large? }
+    validates :first_name, presence: true, if: :large?
+    validates :last_name, presence: true, if: :large?
     validates :from_currency, inclusion: AVAILABLE_CURRENCIES
     validates :to_currency, inclusion: AVAILABLE_CURRENCIES
     validate :currencies_validation
@@ -23,7 +23,7 @@ module Transactionable
     end
 
     def large?
-      from_amount_in_usd > Money.from_amount(100)
+      from_amount_in_usd >= Money.from_amount(100)
     end
 
     def extra_large?
