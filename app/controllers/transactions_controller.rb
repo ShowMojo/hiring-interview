@@ -2,7 +2,7 @@ class TransactionsController < ApplicationController
   before_action :transaction, only: :show
 
   def index
-    @pagy, @transactions = pagy(Transaction.order(id: :desc))
+    @pagy, @transactions = pagy(Transaction.includes(:manager).order(id: :desc))
     @transactions = TransactionDecorator.decorate(@transactions)
   end
 
