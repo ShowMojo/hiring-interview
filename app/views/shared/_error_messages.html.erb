@@ -1,0 +1,17 @@
+<% if resource.errors.any? %>
+  <% if local_assigns.has_key?(:full_messages_for) %>
+    <% resource.errors.full_messages_for(full_messages_for).each do |message| %>
+      <div class="error"><%= message %></div>
+    <% end %>
+  <% else %>
+    <div class="alert alert-danger" role="alert">
+      <ul>
+        <% resource.errors.full_messages.each do |message| %>
+          <li>
+            <%= message %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+<% end %>

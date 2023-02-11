@@ -10,28 +10,7 @@
       </tr>
     </thead>
     <tbody>
-      <% @transactions.each do |transaction| %>
-        <tr>
-          <td>
-            <%= transaction.uid %>
-          </td>
-          <td>
-            <%= number_to_currency(transaction.from_amount, unit: transaction.from_currency,
-                                  separator: ",", delimiter: " ", format: "%n %u") %>
-            ->
-            <%= number_to_currency(transaction.to_amount, unit: transaction.to_currency,
-                                  separator: ",", delimiter: " ", format: "%n %u") %>
-          </td>
-          <td>
-            <%= transaction.client_full_name %>
-          </td>
-          <td>
-            <% if transaction.manager %>
-              <%= transaction.manager.full_name %>
-            <% end %>
-          </td>
-        </tr>
-      <% end %>
+      <%= render @transactions, cached: true %>
     </tbody>
   </table>
 
@@ -40,4 +19,8 @@
     <li><%= link_to "Create 100-1000 USD Transaction", new_transaction_path(type: 'large') %></li>
     <li><%= link_to "Create >1000 USD Transaction", new_transaction_path(type: 'extra') %></li>
   </ul>
+
+  <div>
+    <%== pagy_nav(@pagy) %>
+  </div>
 </div>

@@ -1,0 +1,17 @@
+<% transaction = transaction.decorate %>
+<tr>
+  <td>
+    <%= transaction.uid %>
+  </td>
+  <td>
+    <%= transaction.from_amount_format %>
+    ->
+    <%= transaction.to_amount_format %>
+  </td>
+  <td>
+    <%= transaction.client_full_name %>
+  </td>
+  <td>
+    <%= transaction.manager_full_name %>
+  </td>
+</tr>
