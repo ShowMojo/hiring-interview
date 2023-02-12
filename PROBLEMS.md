@@ -14,7 +14,7 @@
 #### Code issues
 
 1. There is a possible issue for a large number of amount
-2. assign_manager method in transaction.rb has a possible in issue on MySQL. When using MySQL, it needs to be User.order("RAND()").first
+2. assign_manager method in transaction.rb has a possible issue on MySQL. When using MySQL, it needs to be User.order("RAND()").first
 
 #### Others
 
