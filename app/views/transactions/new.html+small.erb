@@ -1,0 +1,8 @@
+<h1>Create 0-100 USD Transaction</h1>
+<ul class="links-list">
+  <li><%= link_to "Create 100-1000 USD Transaction", new_transaction_path(type: 'large') %></li>
+  <li><%= link_to "Create >1000 USD Transaction", new_transaction_path(type: 'extra') %></li>
+</ul>
+
+<%= render "form", transaction_type: params[:type] || "small" %>
+
