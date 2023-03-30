@@ -1,4 +1,5 @@
 class TransactionsController < ApplicationController
+  before_action :set_transaction, only: %i[new create]
 
   def index
     @transactions = Transaction.all
@@ -9,20 +10,24 @@ class TransactionsController < ApplicationController
   end
 
   def new
-    @transaction = Transaction.new
-
     render "new_#{params[:type]}"
   end
 
   def create
-    @transaction = Transaction.new(params[:transaction].permit!)
+    @transaction.assign_attributes(params[:transaction].permit!)
 
     @transaction.manager = Manager.order('random()').first if params[:type] == 'extra'
 
     if @transaction.save
       redirect_to @transaction
     else
-      render "new_#{params[:type]}"
+      new
     end
+  end
+
+  private
+
+  def set_transaction
+    @transaction = Transaction.new
   end
 end
