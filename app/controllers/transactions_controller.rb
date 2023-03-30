@@ -14,7 +14,7 @@ class TransactionsController < ApplicationController
   end
 
   def create
-    @transaction.assign_attributes(params[:transaction].permit!)
+    @transaction.assign_attributes(transaction_attributes)
 
     @transaction.manager = Manager.order('random()').first if params[:type] == 'extra'
 
@@ -29,5 +29,9 @@ class TransactionsController < ApplicationController
 
   def set_transaction
     @transaction = Transaction.new
+  end
+
+  def transaction_attributes
+    params.require(:transaction).permit :first_name, :last_name, :from_amount, :from_currency, :to_currency
   end
 end
