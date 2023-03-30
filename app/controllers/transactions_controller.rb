@@ -2,7 +2,7 @@ class TransactionsController < ApplicationController
   before_action :set_transaction, only: %i[new create]
 
   def index
-    @transactions = Transaction.all
+    @transactions = Transaction.includes(:manager).all
   end
 
   def show
