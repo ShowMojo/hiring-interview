@@ -20,6 +20,8 @@ class Transaction < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
+  private
+
   def large?
     from_amount_in_usd > Money.from_amount(100)
   end
@@ -32,7 +34,6 @@ class Transaction < ApplicationRecord
     from_amount.exchange_to('USD')
   end
 
-  private
 
   def generate_uid
     self.uid = SecureRandom.hex(5)
