@@ -39,9 +39,9 @@ class Transaction < ApplicationRecord
   end
 
   def convert
-    if self.to_amount.blank?
-      self.to_amount = from_amount.exchange_to(self.to_currency)
-    end
+    return unless to_amount.blank?
+
+    self.to_amount = from_amount.exchange_to(to_currency)
   end
 
   def currencies_validation
