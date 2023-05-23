@@ -1,0 +1,5 @@
+<% if Transaction::TYPES.include?(params[:type]) %>
+  <%= render partial: params[:type] %>
+<% else %>
+  <h1>Opps! Page doesn't exist</h4>
+<% end %>
