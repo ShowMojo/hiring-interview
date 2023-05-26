@@ -17,7 +17,7 @@ class TransactionsController < ApplicationController
   def create
     @transaction = Transaction.new(transaction_params)
 
-    @manager = Manager.all.sample if params[:type] == 'extra'
+    @manager = Manager.order(Arel.sql('RANDOM()')).first if @transaction.extra_large?
 
     if @transaction.save
       redirect_to @transaction
