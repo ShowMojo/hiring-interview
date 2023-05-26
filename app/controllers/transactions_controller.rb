@@ -10,7 +10,6 @@ class TransactionsController < ApplicationController
 
   def new
     @transaction = Transaction.new
-    @manager = Manager.all.sample
 
     render "new_#{params[:type]}"
   end
