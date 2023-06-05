@@ -16,24 +16,21 @@
             <%= transaction.uid %>
           </td>
           <td>
-            <%= number_to_currency(transaction.from_amount, unit: transaction.from_currency,
-                                  separator: ",", delimiter: " ", format: "%n %u") %>
+            <%= format_money(transaction.from_amount, transaction.from_currency) %>
             ->
-            <%= number_to_currency(transaction.to_amount, unit: transaction.to_currency,
-                                  separator: ",", delimiter: " ", format: "%n %u") %>
+            <%= format_money(transaction.to_amount, transaction.to_currency) %>
           </td>
           <td>
-            <%= transaction.client_full_name %>
+            <%= full_name(transaction) %>
           </td>
           <td>
-            <% if transaction.manager %>
-              <%= transaction.manager.full_name %>
-            <% end %>
+            <%= full_name(transaction.manager) %>
           </td>
         </tr>
       <% end %>
     </tbody>
   </table>
+  <%= paginate @transactions %>
 
   <ul class="links-list">
     <li><%= link_to "Create 0-100 USD Transaction", new_transaction_path(type: 'small') %></li>

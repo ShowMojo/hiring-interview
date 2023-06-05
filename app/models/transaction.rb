@@ -1,27 +1,28 @@
-class Transaction < ApplicationRecord
-  AVAILABLE_CURRENCIES = ['USD', 'GBP', 'AUD', 'CAD'].freeze
+# frozen_string_literal: true
 
-  belongs_to :manager, optional: true
+class Transaction < ApplicationRecord
+  AVAILABLE_CURRENCIES = %w[USD GBP AUD CAD].freeze
+
+  belongs_to :manager, optional: true,
+                       inverse_of: :transactions
 
   monetize :from_amount_cents, with_currency: ->(t) { t.from_currency }, numericality: { greater_than: 0 }
   monetize :to_amount_cents, with_currency: ->(t) { t.to_currency }
 
-  validates :first_name, presence: true, if: :large?
-  validates :last_name, presence: true, if: :large?
-  validates :from_currency, inclusion: AVAILABLE_CURRENCIES
-  validates :to_currency, inclusion: AVAILABLE_CURRENCIES
-  validate :currencies_validation
-  validate :manager_validation
+  validates_with TransactionValidators::Small, if: :small?
+  validates_with TransactionValidators::Large, if: :large?
+  validates_with TransactionValidators::Extra, if: :extra_large?
 
-  before_create :generate_uid
+  before_validation :generate_uid
   before_validation :convert
+  before_validation :assign_manager
 
-  def client_full_name
-    "#{first_name} #{last_name}"
+  def small?
+    !large? && !extra_large?
   end
 
   def large?
-    from_amount_in_usd > Money.from_amount(100)
+    from_amount_in_usd > Money.from_amount(100) && !extra_large?
   end
 
   def extra_large?
@@ -35,27 +36,36 @@ class Transaction < ApplicationRecord
   private
 
   def generate_uid
-    self.uid = SecureRandom.hex(5)
+    return if uid.present?
+
+    new_uid = generate_random_uid
+    new_uid = generate_random_uid while Transaction.exists?(uid: new_uid)
+    self.uid = new_uid
+  end
+
+  def generate_random_uid
+    SecureRandom.hex(5)
   end
 
   def convert
-    if self.to_amount.blank?
-      self.to_amount = from_amount.exchange_to(self.to_currency)
-    end
+    return if to_amount.present?
+
+    update_rates
+    self.to_amount = from_amount.exchange_to(to_currency)
   end
 
-  def currencies_validation
-    if from_currency == to_currency
-      errors.add(:from_currency, "can't be converted to the same currency.")
-    end
-    if !extra_large? && from_currency != 'USD'
-      errors.add(:from_currency, "available only for conversions over $1000.")
-    end
+  def assign_manager
+    return if manager.present?
+
+    self.manager = Manager.order('RANDOM()').first if extra_large?
   end
 
-  def manager_validation
-    if extra_large? && !manager
-      errors.add(:base, "conversions over $1000 require personal manager.")
-    end
+  def update_rates
+    eu_bank = Money.default_bank
+    return if eu_bank.rates_updated_at && eu_bank.rates_updated_at < 1.day.ago
+
+    cache = 'exchange_rates.xml'
+    eu_bank.save_rates(cache)
+    eu_bank.update_rates(cache)
   end
 end

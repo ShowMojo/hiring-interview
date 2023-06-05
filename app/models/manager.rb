@@ -1,7 +1,9 @@
-class Manager < ApplicationRecord
-  has_many :transactions
+# frozen_string_literal: true
 
-  def full_name
-    "#{first_name} #{last_name}"
-  end
+class Manager < ApplicationRecord
+  has_many :transactions, dependent: :nullify,
+                          inverse_of: :manager
+
+  validates :first_name, presence: true
+  validates :last_name, presence: true
 end
