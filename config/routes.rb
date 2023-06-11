@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root "transactions#new", type: 'small'
+  root 'transactions#new', type: 'small'
 
   resources :transactions, only: [:index, :show, :create]
 
