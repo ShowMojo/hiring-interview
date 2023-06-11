@@ -25,6 +25,7 @@
 3. Non-utilization of service objects for business logic. Incorporating service objects is a recommended pattern for encapsulating complex business logic. While libraries like Trailblazer offer a ready-made implementation of this pattern, it is also possible to create custom service objects. Using this pattern can prevent models from becoming bloated and unmanageable, often leading to a lack of scalability and maintainability.
 4. Handling different currencies with an ENUM and storing them in the database. When dealing with multiple currencies, it is advisable to use an ENUM data type for representing the various currency options. Storing these currencies in the database allows for consistent handling and avoids potential data inconsistencies.
 5. Implementing a finite-state machine pattern for transactions. To ensure correct business logic and proper handling of state changes in transactions, it is beneficial to utilize a finite-state machine pattern. This approach enforces the appropriate sequencing of actions and ensures that the application behaves consistently and predictably.
+6. To handle money in Rails more effectively, it is recommended to use a decimal data type instead of a simple integer. The decimal data type provides better precision and allows for storing and performing calculations with monetary values accurately.
 
 
 #### Others
