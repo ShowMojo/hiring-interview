@@ -19,12 +19,14 @@ managers = Manager.create([
   {first_name: 'Izolda', last_name: 'Abbandonato'},
 ])
 
-Transaction.create!([
-  {first_name: 'Steren', last_name: 'Nausikaa', from_currency: 'USD',
-   to_currency: 'CAD', from_amount_cents: 200000, manager: managers[5]},
-  {first_name: 'Muthoni', last_name: 'Iunia', from_currency: 'USD',
-   to_currency: 'GBP', from_amount_cents: 300000, manager: managers[8]},
-  {first_name: 'Anna', last_name: 'Bogali', from_currency: 'USD',
-   to_currency: 'GBP', from_amount_cents: 11000, manager: managers[8]},
-  {from_currency: 'USD', to_currency: 'AUD', from_amount_cents: 9000},
-])
+1000.times do 
+    Transaction.create!([
+    {first_name: 'Steren', last_name: 'Nausikaa', from_currency: 'USD',
+    to_currency: 'CAD', from_amount_cents: 200000, manager: managers[5]},
+    {first_name: 'Muthoni', last_name: 'Iunia', from_currency: 'USD',
+    to_currency: 'GBP', from_amount_cents: 300000, manager: managers[8]},
+    {first_name: 'Anna', last_name: 'Bogali', from_currency: 'USD',
+    to_currency: 'GBP', from_amount_cents: 11000, manager: managers[8]},
+    {from_currency: 'USD', to_currency: 'AUD', from_amount_cents: 9000},
+  ])
+end
