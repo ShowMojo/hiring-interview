@@ -14,7 +14,7 @@ class TransactionsController < ApplicationController
   end
 
   def create
-    @transaction = Transaction.new(params[:transaction].permit!)
+    @transaction = Transaction.new(transaction_params)
 
     @transaction.manager = Manager.order('RANDOM()').first if @transaction.extra_large?
 
@@ -23,5 +23,18 @@ class TransactionsController < ApplicationController
     else
       render "new_#{params[:type]}"
     end
+  end
+
+  private
+
+  def transaction_params
+    @transaction_params ||= params.require(:transaction)
+                                  .permit(
+                                    :first_name,
+                                    :last_name,
+                                    :from_amount,
+                                    :from_currency,
+                                    :to_currency
+                                  )
   end
 end
