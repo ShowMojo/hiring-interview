@@ -23,11 +23,11 @@
                                   separator: ",", delimiter: " ", format: "%n %u") %>
           </td>
           <td>
-            <%= transaction.client_full_name %>
+            <%= full_name(transaction) %>
           </td>
           <td>
             <% if transaction.manager %>
-              <%= transaction.manager.full_name %>
+              <%= full_name(transaction.manager) %>
             <% end %>
           </td>
         </tr>

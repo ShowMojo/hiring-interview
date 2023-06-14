@@ -1,7 +1,6 @@
 class TransactionsController < ApplicationController
-
   def index
-    @transactions = Transaction.all.includes(:manager).page(params[:page])
+    @transactions = Transaction.all.includes(:manager).order(id: :desc).page(params[:page])
   end
 
   def show
@@ -14,11 +13,8 @@ class TransactionsController < ApplicationController
   end
 
   def create
-    @transaction = Transaction.new(transaction_params)
-
-    @transaction.manager = Manager.order('RANDOM()').first if @transaction.extra_large?
-
-    if @transaction.save
+    @transaction = PerformTransaction.new(transaction_params).call
+    if @transaction.persisted?
       redirect_to @transaction
     else
       render "new_#{params[:type]}"
