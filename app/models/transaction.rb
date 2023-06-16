@@ -1,5 +1,5 @@
 class Transaction < ApplicationRecord
-  AVAILABLE_CURRENCIES = ['USD', 'GBP', 'AUD', 'CAD'].freeze
+  AVAILABLE_CURRENCIES = %w[USD GBP AUD CAD].freeze
 
   belongs_to :manager, optional: true
 
@@ -8,8 +8,8 @@ class Transaction < ApplicationRecord
 
   validates :first_name, presence: true, if: :large?
   validates :last_name, presence: true, if: :large?
-  validates :from_currency, inclusion: AVAILABLE_CURRENCIES
-  validates :to_currency, inclusion: AVAILABLE_CURRENCIES
+  validates :from_currency, inclusion: { in: AVAILABLE_CURRENCIES, message: "is not a valid currency" }
+  validates :to_currency, inclusion: { in: AVAILABLE_CURRENCIES, message: "is not a valid currency" }
   validate :currencies_validation
   validate :manager_validation
 
@@ -39,23 +39,21 @@ class Transaction < ApplicationRecord
   end
 
   def convert
-    if self.to_amount.blank?
-      self.to_amount = from_amount.exchange_to(self.to_currency)
-    end
+    return if to_amount.present?
+
+    self.to_amount = from_amount.exchange_to(to_currency)
   end
 
   def currencies_validation
-    if from_currency == to_currency
-      errors.add(:from_currency, "can't be converted to the same currency.")
-    end
-    if !extra_large? && from_currency != 'USD'
-      errors.add(:from_currency, "available only for conversions over $1000.")
-    end
+    errors.add(:from_currency, "can't be converted to the same currency.") if from_currency == to_currency
+    return unless !extra_large? && from_currency != 'USD'
+
+    errors.add(:from_currency, 'available only for conversions over $1000.')
   end
 
   def manager_validation
-    if extra_large? && !manager
-      errors.add(:base, "conversions over $1000 require personal manager.")
-    end
+    return unless extra_large? && !manager
+
+    errors.add(:base, 'conversions over $1000 require personal manager.')
   end
 end

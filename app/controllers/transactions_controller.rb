@@ -1,7 +1,6 @@
 class TransactionsController < ApplicationController
-
   def index
-    @transactions = Transaction.all
+    @transactions = Transaction.all.includes(:manager).order(id: :desc).page(params[:page])
   end
 
   def show
@@ -10,24 +9,14 @@ class TransactionsController < ApplicationController
 
   def new
     @transaction = Transaction.new
-    @manager = Manager.all.sample
 
     render "new_#{params[:type]}"
   end
 
-  def new_large
-    @transaction = Transaction.new
-  end
-
-  def new_extra_large
-    @transaction = Transaction.new
-    @manager = Manager.all.sample
-  end
-
   def create
-    @transaction = Transaction.new(params[:transaction].permit!)
+    @transaction = Transaction.new(transaction_params)
 
-    @manager = Manager.all.sample if params[:type] == 'extra'
+    @manager = Manager.order('RANDOM()').first if params[:type] == 'extra'
 
     if @transaction.save
       redirect_to @transaction
@@ -35,4 +24,10 @@ class TransactionsController < ApplicationController
       render "new_#{params[:type]}"
     end
   end
+
+  private
+
+  def transaction_params
+￼    params.require(:transaction).permit(:first_name, :last_name, :from_amount, :from_currency, :to_currency)
+￼ end
 end
