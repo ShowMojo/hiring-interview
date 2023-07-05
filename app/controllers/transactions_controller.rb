@@ -23,8 +23,7 @@ class TransactionsController < ApplicationController
     if @transaction.save
       redirect_to @transaction
     else
-      render json: {errors: @transaction.errors.full_messages}
-      # render "new_#{params[:type]}"
+      render "new_#{params[:type]}"
     end
   end
 
