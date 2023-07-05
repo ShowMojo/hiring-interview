@@ -42,6 +42,6 @@ class TransactionsController < ApplicationController
   end
 
   def per_page
-    params[:per_page] || 5
+    params[:per_page] || 50
   end
 end
