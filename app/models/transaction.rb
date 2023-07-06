@@ -16,6 +16,8 @@ class Transaction < ApplicationRecord
 
   enum conversion_type: {small: 1, large: 10, extra: 20} # Just to keep space to add new types like medium or something in the future
 
+  default_scope { order(created_at: :desc) }
+
   def client_full_name
     "#{first_name} #{last_name}"
   end

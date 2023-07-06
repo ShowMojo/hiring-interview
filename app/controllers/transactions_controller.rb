@@ -19,6 +19,7 @@ class TransactionsController < ApplicationController
 
   def create
     @transaction = Transaction.new(create_params)
+    @manager = Manager.all.sample
 
     if @transaction.save
       redirect_to @transaction
