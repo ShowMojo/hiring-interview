@@ -10,10 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_12_125532) do
+ActiveRecord::Schema.define(version: 2023_07_19_125036) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
+  enable_extension "uuid-ossp"
 
   create_table "managers", force: :cascade do |t|
     t.string "first_name", null: false
@@ -23,7 +25,6 @@ ActiveRecord::Schema.define(version: 2022_02_12_125532) do
   end
 
   create_table "transactions", force: :cascade do |t|
-    t.string "uid"
     t.string "first_name"
     t.string "last_name"
     t.integer "from_amount_cents", null: false
@@ -33,6 +34,7 @@ ActiveRecord::Schema.define(version: 2022_02_12_125532) do
     t.bigint "manager_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "uid", default: -> { "uuid_generate_v4()" }, null: false
     t.index ["manager_id"], name: "index_transactions_on_manager_id"
   end
 
