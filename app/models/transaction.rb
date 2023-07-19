@@ -13,7 +13,6 @@ class Transaction < ApplicationRecord
   validate :currencies_validation
   validate :manager_validation
 
-  before_create :generate_uid
   before_validation :convert
 
   def client_full_name
@@ -33,10 +32,6 @@ class Transaction < ApplicationRecord
   end
 
   private
-
-  def generate_uid
-    self.uid = SecureRandom.hex(5)
-  end
 
   def convert
     if self.to_amount.blank?
