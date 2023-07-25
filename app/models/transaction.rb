@@ -1,5 +1,7 @@
 class Transaction < ApplicationRecord
   AVAILABLE_CURRENCIES = ['USD', 'GBP', 'AUD', 'CAD'].freeze
+  MIN_LARGE_AMOUNT = Money.from_amount(100)
+  MIN_EXTRA_LARGE_AMOUNT = Money.from_amount(1000)
 
   belongs_to :manager, optional: true
 
@@ -21,11 +23,11 @@ class Transaction < ApplicationRecord
   end
 
   def large?
-    from_amount_in_usd > Money.from_amount(100)
+    from_amount_in_usd > MIN_LARGE_AMOUNT
   end
 
   def extra_large?
-    from_amount_in_usd > Money.from_amount(1000)
+    from_amount_in_usd > MIN_EXTRA_LARGE_AMOUNT
   end
 
   def from_amount_in_usd
