@@ -26,7 +26,6 @@ class TransactionsController < ApplicationController
     if @transaction.save
       redirect_to @transaction
     else
-      pp @transaction.errors.full_messages
       render "new_#{size_type}"
     end
   end
