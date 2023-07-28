@@ -1,7 +1,12 @@
+# frozen_string_literal: true
+
 class TransactionsController < ApplicationController
+  rescue_from 'ActiveRecord::RecordNotFound' do
+    render plain: 'Inexistent transaction', status: :not_found
+  end
 
   def index
-    @transactions = Transaction.all
+    @pagy, @transactions = pagy(Transaction.all.includes(:manager))
   end
 
   def show
@@ -10,29 +15,35 @@ class TransactionsController < ApplicationController
 
   def new
     @transaction = Transaction.new
-    @manager = Manager.all.sample
 
-    render "new_#{params[:type]}"
-  end
-
-  def new_large
-    @transaction = Transaction.new
-  end
-
-  def new_extra_large
-    @transaction = Transaction.new
-    @manager = Manager.all.sample
+    render "new_#{size_type}"
   end
 
   def create
-    @transaction = Transaction.new(params[:transaction].permit!)
-
-    @manager = Manager.all.sample if params[:type] == 'extra'
+    @transaction = Transaction.new(params_for_create)
+    @transaction.intended_size = size_type
 
     if @transaction.save
       redirect_to @transaction
     else
-      render "new_#{params[:type]}"
+      pp @transaction.errors.full_messages
+      render "new_#{size_type}"
     end
+  end
+
+  private
+
+  def size_type
+    (Transaction::ALLOWED_SIZES & [params[:type]]).first || 'small'
+  end
+
+  def params_for_create
+    params.require(:transaction).permit(
+      :first_name,
+      :last_name,
+      :from_currency,
+      :to_currency,
+      :from_amount
+    )
   end
 end

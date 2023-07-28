@@ -1,0 +1,5 @@
+<ul class="links-list">
+  <% if params[:type] != 'small' %><li><%= link_to small_amount_title, new_transaction_path(type: 'small') %></li><% end %>
+  <% if params[:type] != 'large' %><li><%= link_to large_amount_title, new_transaction_path(type: 'large') %></li><% end %>
+  <% if params[:type] != 'extra' %><li><%= link_to extra_amount_title, new_transaction_path(type: 'extra') %></li><% end %>
+</ul>
