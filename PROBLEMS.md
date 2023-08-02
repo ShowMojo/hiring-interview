@@ -27,3 +27,4 @@
 1. The managers are randomly chosen for extra large transactions. A better approach is to have an Account Manager. The AM will be automatically resposible for any transaction that comes from a specific user.
 2. ID can be automatically generated as UUID through postgres. (https://pawelurbanek.com/uuid-order-rails)
 3. To hold monetary values we could have used numeric data type instead of using the Money gem.
+4. Gems like `rubocop` and `brakeman` can be used to enforce code quality and security. Also gems like annotate_models are a great QoL improvement for developers

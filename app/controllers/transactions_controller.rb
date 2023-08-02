@@ -1,7 +1,7 @@
 class TransactionsController < ApplicationController
 
   def index
-    @transactions = Transaction.all
+    @transactions = Transaction.page(params[:page]).includes(:manager)
   end
 
   def show
