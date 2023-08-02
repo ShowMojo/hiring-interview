@@ -19,7 +19,7 @@ class TransactionsController < ApplicationController
   end
 
   def create
-    @transaction = Transaction.new(transaction_params)
+    @transaction = "Transaction::#{params[:type].camelcase}".constantize.new(transaction_params)
     @transaction.manager = Manager.all.sample if params[:type] == 'extra'
 
     if @transaction.save
