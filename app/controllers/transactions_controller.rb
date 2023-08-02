@@ -1,38 +1,37 @@
 class TransactionsController < ApplicationController
 
   def index
-    @transactions = Transaction.all
+    @transactions = Transaction.page(params[:page]).includes(:manager)
   end
 
   def show
-    @transaction = Transaction.find(params[:id])
+    @transaction = Transaction.find_by(uid: params[:id])
+
+    if @transaction.nil?
+      raise ActionController::RoutingError.new('Not Found')
+    end
   end
 
   def new
     @transaction = Transaction.new
-    @manager = Manager.all.sample
 
     render "new_#{params[:type]}"
   end
 
-  def new_large
-    @transaction = Transaction.new
-  end
-
-  def new_extra_large
-    @transaction = Transaction.new
-    @manager = Manager.all.sample
-  end
-
   def create
-    @transaction = Transaction.new(params[:transaction].permit!)
-
-    @manager = Manager.all.sample if params[:type] == 'extra'
+    @transaction = "Transaction::#{params[:type].camelcase}".constantize.new(transaction_params)
+    @transaction.manager = Manager.all.sample if params[:type] == 'extra'
 
     if @transaction.save
-      redirect_to @transaction
+      redirect_to transaction_path(@transaction.uid)
     else
       render "new_#{params[:type]}"
     end
+  end
+
+  private
+
+  def transaction_params
+    params.require(:transaction).permit(:first_name, :last_name, :from_amount, :from_currency, :to_currency)
   end
 end

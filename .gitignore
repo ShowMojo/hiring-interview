@@ -39,3 +39,5 @@ yarn-debug.log*
 /.idea
 ubuntu-bionic-18.04-cloudimg-console.log
 /.vagrant
+
+config/database.yml
