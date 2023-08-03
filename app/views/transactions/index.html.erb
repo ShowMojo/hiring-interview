@@ -26,9 +26,7 @@
             <%= transaction.client_full_name %>
           </td>
           <td>
-            <% if transaction.manager %>
-              <%= transaction.manager.full_name %>
-            <% end %>
+            <%= transaction.manager&.full_name %>
           </td>
         </tr>
       <% end %>

@@ -4,9 +4,9 @@
   <li><%= link_to "Create 100-1000 USD Transaction", new_transaction_path(type: 'large') %></li>
 </ul>
 
-<%= form_with model: @transaction do |form| %>
-  <%= form.hidden_field :manager_id, value: @manager.id %>
-  <%= hidden_field_tag :type, 'extra' %>
+<%= form_with model: @transaction, url: transactions_path do |form| %>
+  <%= hidden_field_tag :type, 'extra' %> 
+
   <div class="form-group">
     <%= form.label :first_name %>
     <%= form.text_field :first_name, autocomplete: 'off' %>
@@ -19,6 +19,16 @@
     <%= form.label :last_name %>
     <%= form.text_field :last_name, autocomplete: 'off' %>
     <% @transaction.errors.full_messages_for(:last_name).each do |message| %>
+      <div class="error"><%= message %></div>
+    <% end %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :manager_id, 'Assigned Manager' %><br>
+    <%= form.select :manager_id,
+                    @managers.collect {|p| [ p.full_name, p.id ] },
+                    include_blank: true %>
+    <% @transaction.errors.full_messages_for(:manager).each do |message| %>
       <div class="error"><%= message %></div>
     <% end %>
   </div>

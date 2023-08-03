@@ -1,4 +1,5 @@
 class TransactionsController < ApplicationController
+  before_action :set_managers, only: %i[new create]
 
   def index
     @transactions = Transaction.all
@@ -10,29 +11,33 @@ class TransactionsController < ApplicationController
 
   def new
     @transaction = Transaction.new
-    @manager = Manager.all.sample
-
     render "new_#{params[:type]}"
   end
 
-  def new_large
-    @transaction = Transaction.new
-  end
-
-  def new_extra_large
-    @transaction = Transaction.new
-    @manager = Manager.all.sample
-  end
-
   def create
-    @transaction = Transaction.new(params[:transaction].permit!)
-
-    @manager = Manager.all.sample if params[:type] == 'extra'
+    @transaction = Transaction.subclass_for(params[:type]).new(transaction_params)
 
     if @transaction.save
-      redirect_to @transaction
+      redirect_to transaction_path(@transaction)
     else
       render "new_#{params[:type]}"
     end
+  end
+
+  private
+
+  def transaction_params
+    params.require(:transaction).permit(
+      :first_name,
+      :last_name,
+      :from_amount,
+      :from_currency,
+      :to_currency,
+      :manager_id
+    )
+  end
+
+  def set_managers
+    @managers = Manager.all
   end
 end

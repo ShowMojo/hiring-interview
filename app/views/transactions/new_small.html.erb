@@ -4,7 +4,7 @@
   <li><%= link_to "Create >1000 USD Transaction", new_transaction_path(type: 'extra') %></li>
 </ul>
 
-<%= form_with model: @transaction do |form| %>
+<%= form_with model: @transaction, url: transactions_path do |form| %>
   <%= form.hidden_field :from_currency, value: 'USD' %>
   <%= hidden_field_tag :type, 'small' %>
   <div class="form-group">
