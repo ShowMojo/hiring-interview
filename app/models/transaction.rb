@@ -10,6 +10,7 @@ class Transaction < ApplicationRecord
   validates :last_name, presence: true, if: :large?
   validates :from_currency, inclusion: AVAILABLE_CURRENCIES
   validates :to_currency, inclusion: AVAILABLE_CURRENCIES
+  validates :from_amount, presence: true
   validate :currencies_validation
   validate :manager_validation
 
