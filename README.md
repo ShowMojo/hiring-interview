@@ -1,3 +1,15 @@
+### Set everything up
+
+1. `docker compose run migrate`
+2. `docker compose run seed`
+3. `docker compose up web`
+
+### Run tests
+
+4. `docker compose run test`
+
+---
+
 # Rails Programming Task
 
 ### Business description
@@ -20,4 +32,3 @@ We are not talking about UI problems here.
 3. Write short description for each problem you could find to the PROBLEMS.md file.
 4. Fix those, which you think are most important and critical. **Important:** don't fix all of them. The task should take no longer than 2-3 hours.
 5. Commit and Push your changes to new repository. Send us a pull request. We will get back to you.
-
