@@ -3,7 +3,7 @@
   <table>
     <thead>
       <tr>
-        <th>Code</th>
+        <th>ID</th>
         <th>Transaction</th>
         <th>Client</th>
         <th>Manager</th>
@@ -13,7 +13,7 @@
       <% @transactions.each do |transaction| %>
         <tr>
           <td>
-            <%= transaction.uid %>
+            <%= link_to transaction.id, transaction %>
           </td>
           <td>
             <%= number_to_currency(transaction.from_amount, unit: transaction.from_currency,

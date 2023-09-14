@@ -9,7 +9,7 @@ body {
 }
 
 .main-content {
-  width: 800px;
+  width: 1200px;
   margin: 15px auto;
   background: #f8f8f8;
   padding: 10px 40px 40px;
@@ -102,7 +102,7 @@ button, input[type="submit"], .button {
 
 table {
   text-align: left;
-  border-collapse: collapse; 
+  border-collapse: collapse;
   thead tr {
     border-bottom: 1px solid #ccc;
     color: #3b3b3b;
@@ -118,7 +118,7 @@ table {
 
 .links-list {
   display: flex;
-  padding: 0; 
+  padding: 0;
   li {
     margin-right: 20px;
   }

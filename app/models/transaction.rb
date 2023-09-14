@@ -1,4 +1,6 @@
 class Transaction < ApplicationRecord
+  self.implicit_order_column = 'created_at'
+
   AVAILABLE_CURRENCIES = %w[USD GBP AUD CAD].freeze
 
   belongs_to :manager, optional: true
