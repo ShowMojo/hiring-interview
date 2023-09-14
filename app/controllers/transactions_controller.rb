@@ -1,5 +1,4 @@
 class TransactionsController < ApplicationController
-
   def index
     @transactions = Transaction.all
   end
@@ -10,24 +9,17 @@ class TransactionsController < ApplicationController
 
   def new
     @transaction = Transaction.new
-    @manager = Manager.all.sample
 
     render "new_#{params[:type]}"
-  end
-
-  def new_large
-    @transaction = Transaction.new
-  end
-
-  def new_extra_large
-    @transaction = Transaction.new
-    @manager = Manager.all.sample
   end
 
   def create
     @transaction = Transaction.new(params[:transaction].permit!)
 
-    @manager = Manager.all.sample if params[:type] == 'extra'
+    if params[:type] == 'extra'
+      manager = @manager = Manager.order('RANDOM()').first
+      @transaction.manager = manager
+    end
 
     if @transaction.save
       redirect_to @transaction
