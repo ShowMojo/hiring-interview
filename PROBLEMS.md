@@ -2,7 +2,7 @@
 
 #### Security issues
 
-1. Use strong parameters for `TransactionsController`
+1. [+] Use strong parameters for `TransactionsController`
 2. Add authentication logic for access (e.g. Devise)
 3. Add authorization logic in case different user roles (e.g. Pundit)
 
@@ -19,10 +19,11 @@
 3. [+] Use PostgreSQL UUID as a primary key
 4. Get rid of `new_small`, `new_large`, and `new_extra` views, use single dynamic form instead.
 5. [+] Use decorators to access combined attributes (e.g. Draper)
-6. Use code style linter (e.g. Rubocop)
-7. Use service objects to manage transactions
-8. Use bigint for cents columns, extend validations
-9. Add specs
+6. Refactor views to make it DRY
+7. Use code style linter (e.g. Rubocop)
+8. [+] Use service object to manage transactions
+9. Use bigint for cents columns, extend validations
+10. Add specs
 
 #### Others
 

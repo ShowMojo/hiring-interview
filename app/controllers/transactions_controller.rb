@@ -10,21 +10,16 @@ class TransactionsController < ApplicationController
   def new
     @transaction = Transaction.new
 
-    render "new_#{params[:type]}"
+    render "new_#{transaction_type}"
   end
 
   def create
-    @transaction = Transaction.new(params[:transaction].permit!)
+    @transaction = CreateTransactionService.call(transaction_params, transaction_type)
 
-    if params[:type] == 'extra'
-      manager = @manager = Manager.order('RANDOM()').first
-      @transaction.manager = manager
-    end
-
-    if @transaction.save
+    if @transaction.persisted?
       redirect_to @transaction
     else
-      render "new_#{params[:type]}"
+      render "new_#{transaction_type}"
     end
   end
 
@@ -32,5 +27,9 @@ class TransactionsController < ApplicationController
 
   def transaction_params
     params.require(:transaction).permit(:first_name, :last_name, :from_amount, :from_currency, :to_currency)
+  end
+
+  def transaction_type
+    params[:type]
   end
 end

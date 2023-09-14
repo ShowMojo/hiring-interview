@@ -39,6 +39,7 @@ class Transaction < ApplicationRecord
 
   def currencies_validation
     errors.add(:from_currency, "can't be converted to the same currency.") if from_currency == to_currency
+
     return unless !extra_large? && from_currency != 'USD'
 
     errors.add(:from_currency, 'available only for conversions over $1000.')
