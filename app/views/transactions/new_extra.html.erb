@@ -5,8 +5,8 @@
 </ul>
 
 <%= form_with model: @transaction do |form| %>
-  <%= form.hidden_field :manager_id, value: @manager.id %>
   <%= hidden_field_tag :type, 'extra' %>
+  <%= form.hidden_field :type, value: 'extra_large' %>
   <div class="form-group">
     <%= form.label :first_name %>
     <%= form.text_field :first_name, autocomplete: 'off' %>
@@ -51,4 +51,3 @@
     <%= form.submit %>
   </div>
 <% end %>
-

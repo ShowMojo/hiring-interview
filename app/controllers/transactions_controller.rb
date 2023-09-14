@@ -1,7 +1,6 @@
 class TransactionsController < ApplicationController
-
   def index
-    @transactions = Transaction.all
+    @transactions = TransactionDecorator.decorate_collection(Transaction.includes(:manager).all)
   end
 
   def show
@@ -10,29 +9,27 @@ class TransactionsController < ApplicationController
 
   def new
     @transaction = Transaction.new
-    @manager = Manager.all.sample
 
-    render "new_#{params[:type]}"
-  end
-
-  def new_large
-    @transaction = Transaction.new
-  end
-
-  def new_extra_large
-    @transaction = Transaction.new
-    @manager = Manager.all.sample
+    render "new_#{transaction_type}"
   end
 
   def create
-    @transaction = Transaction.new(params[:transaction].permit!)
+    @transaction = CreateTransactionService.call(transaction_params)
 
-    @manager = Manager.all.sample if params[:type] == 'extra'
-
-    if @transaction.save
+    if @transaction.persisted?
       redirect_to @transaction
     else
-      render "new_#{params[:type]}"
+      render "new_#{transaction_type}"
     end
+  end
+
+  private
+
+  def transaction_params
+    params.require(:transaction).permit(:type, :first_name, :last_name, :from_amount, :from_currency, :to_currency)
+  end
+
+  def transaction_type
+    params[:type]
   end
 end

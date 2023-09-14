@@ -6,6 +6,7 @@
 
 <%= form_with model: @transaction do |form| %>
   <%= form.hidden_field :from_currency, value: 'USD' %>
+  <%= form.hidden_field :type, value: 'small' %>
   <%= hidden_field_tag :type, 'small' %>
   <div class="form-group">
     <%= form.label :from_amount, 'Amount(USD)' %>
@@ -27,4 +28,3 @@
     <%= form.submit %>
   </div>
 <% end %>
-
