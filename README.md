@@ -4,10 +4,6 @@
 2. `docker compose run seed`
 3. `docker compose up web`
 
-### Run tests
-
-4. `docker compose run test`
-
 ---
 
 # Rails Programming Task
