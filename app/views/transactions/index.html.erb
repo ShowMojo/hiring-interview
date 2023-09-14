@@ -5,6 +5,7 @@
       <tr>
         <th>ID</th>
         <th>Transaction</th>
+        <th>Type</th>
         <th>Client</th>
         <th>Manager</th>
       </tr>
@@ -21,6 +22,9 @@
             ->
             <%= number_to_currency(transaction.to_amount, unit: transaction.to_currency,
                                   separator: ",", delimiter: " ", format: "%n %u") %>
+          </td>
+          <td>
+            <%= transaction.type %>
           </td>
           <td>
             <%= transaction.client_full_name %>

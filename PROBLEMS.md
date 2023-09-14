@@ -22,8 +22,10 @@
 6. Refactor views to make it DRY
 7. Use code style linter (e.g. Rubocop)
 8. [+] Use service object to manage transactions
-9. Use bigint for cents columns, extend validations
-10. Add specs
+9. [+] Use bigint for cents columns
+10. [+] Add `type` column to transactions to use enum instead
+11. [+] Extend validations on transaction (to cover amount range, etc.)
+12. Add specs
 
 #### Others
 

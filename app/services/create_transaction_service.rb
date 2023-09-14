@@ -1,17 +1,14 @@
 class CreateTransactionService
   include Callable
 
-  attr_reader :transaction, :type
-
-  def initialize(params, type)
+  def initialize(params)
     @transaction = Transaction.new(params)
-    @type = type
   end
 
   def call
-    transaction.manager = random_manager if type == 'extra'
-    transaction.save
-    transaction
+    @transaction.manager = random_manager if @transaction.extra_large?
+    @transaction.save
+    @transaction
   end
 
   private

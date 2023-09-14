@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_09_14_034055) do
+ActiveRecord::Schema.define(version: 2023_09_14_075952) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -27,13 +27,14 @@ ActiveRecord::Schema.define(version: 2023_09_14_034055) do
     t.bigint "integer_id"
     t.string "first_name"
     t.string "last_name"
-    t.integer "from_amount_cents", null: false
-    t.integer "to_amount_cents", null: false
+    t.bigint "from_amount_cents", null: false
+    t.bigint "to_amount_cents", null: false
     t.string "from_currency", default: "USD", null: false
     t.string "to_currency", null: false
     t.bigint "manager_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "type", default: 0, null: false
     t.index ["manager_id"], name: "index_transactions_on_manager_id"
   end
 
