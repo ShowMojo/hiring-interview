@@ -15,12 +15,7 @@ class Transaction < ApplicationRecord
   validate :currencies_validation
   validate :manager_validation
 
-  before_create :generate_uid
   before_validation :convert
-
-  def client_full_name
-    "#{first_name} #{last_name}"
-  end
 
   def large?
     from_amount_in_usd > Money.from_amount(100)
@@ -35,10 +30,6 @@ class Transaction < ApplicationRecord
   end
 
   private
-
-  def generate_uid
-    self.uid = SecureRandom.hex(5)
-  end
 
   def convert
     return unless to_amount.blank?

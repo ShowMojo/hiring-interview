@@ -17,10 +17,12 @@
 1. [+] Get rid of redundant `new_large` & `new_extra_large` actions
 2. [+] Random manager is needed for extra large transactions only. Could be selected on the model side.
 3. [+] Use PostgreSQL UUID as a primary key
-4. Use code style linter (e.g. Rubocop)
-5. Use service objects to manage transactions
-6. Use bigint for cents columns, extend validations
-7. Add specs
+4. Get rid of `new_small`, `new_large`, and `new_extra` views, use single dynamic form instead.
+5. [+] Use decorators to access combined attributes (e.g. Draper)
+6. Use code style linter (e.g. Rubocop)
+7. Use service objects to manage transactions
+8. Use bigint for cents columns, extend validations
+9. Add specs
 
 #### Others
 

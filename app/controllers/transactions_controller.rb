@@ -1,6 +1,6 @@
 class TransactionsController < ApplicationController
   def index
-    @transactions = Transaction.all
+    @transactions = TransactionDecorator.decorate_collection(Transaction.includes(:manager).all)
   end
 
   def show
@@ -26,5 +26,11 @@ class TransactionsController < ApplicationController
     else
       render "new_#{params[:type]}"
     end
+  end
+
+  private
+
+  def transaction_params
+    params.require(:transaction).permit(:first_name, :last_name, :from_amount, :from_currency, :to_currency)
   end
 end
